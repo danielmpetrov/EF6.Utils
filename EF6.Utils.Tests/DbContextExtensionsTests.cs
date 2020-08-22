@@ -1,24 +1,22 @@
 ﻿using EF6.Utils.Demo.Data;
 using Effort;
 using FluentAssertions;
-using NUnit.Framework;
 using System.Collections.Generic;
+using Xunit;
 
 namespace EF6.Utils.Tests
 {
-    [TestFixture]
-    public class Tests
+    public class DbContextExtensionsTests
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        [SetUp]
-        public void Initialize()
+        public DbContextExtensionsTests()
         {
             var connection = DbConnectionFactory.CreateTransient();
             _context = new AppDbContext(connection);
         }
 
-        [Test]
+        [Fact]
         public void SaveChangesTimestamped_WhenAddingOneNewEntity_ShouldSetTheSameCreatedAndUpdatedDateTimes()
         {
             // Arrange
@@ -34,7 +32,7 @@ namespace EF6.Utils.Tests
             comment.CreatedOn.Should().Be(comment.UpdatedOn);
         }
 
-        [Test]
+        [Fact]
         public void SaveChangesTimestamped_WhenAddingMultipleNewEntities_ShouldSetTheSameCreatedAndUpdatedDateTimes()
         {
             // Arrange
