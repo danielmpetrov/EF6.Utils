@@ -1,15 +1,18 @@
-﻿using System.Data.Entity.Migrations;
-
-namespace EF6.Utils.Demo.Migrations
+﻿namespace EF6.Utils.Demo.Data.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<AppDbContext>
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<EF6.Utils.Demo.Data.AppDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AppDbContext context)
+        protected override void Seed(EF6.Utils.Demo.Data.AppDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -1,4 +1,5 @@
 ﻿using EF6.Utils; // add this import to your project
+using EF6.Utils.Demo.Data;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

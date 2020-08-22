@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EF6.Utils.Demo
+namespace EF6.Utils.Demo.Data
 {
     public class Comment : ITimestampedEntity
     {

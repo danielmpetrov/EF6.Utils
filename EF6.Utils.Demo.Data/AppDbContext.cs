@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace EF6.Utils.Demo
+namespace EF6.Utils.Demo.Data
 {
     public class AppDbContext : DbContext
     {

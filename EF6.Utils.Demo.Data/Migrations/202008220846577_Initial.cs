@@ -1,4 +1,4 @@
-﻿namespace EF6.Utils.Demo.Migrations
+﻿namespace EF6.Utils.Demo.Data.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
