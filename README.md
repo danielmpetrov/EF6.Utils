@@ -1,5 +1,8 @@
 # EF6.Utils
 
+[![GitHub](https://img.shields.io/github/license/danielmpetrov/ef6.utils)](https://github.com/danielmpetrov/ef6.utils/blob/master/LICENSE)
+[![Feedback](https://img.shields.io/badge/Feedback-Welcome-orange)](https://github.com/danielmpetrov/EF6.Utils/issues)
+
 A set of Entity Framework 6 extensions that reduce the boilerplate needed for common requirements.
 
 ## Features
@@ -35,6 +38,18 @@ var latestComment = _context.LatestCreatedOrDefault<Comment>(); // returns null 
 // query from the set
 var latestComment = _context.Comments.LatestCreated(); // throws on empty set
 var latestComment = _context.Comments.LatestCreatedOrDefault(); // returns null on empty set
+```
+
+All methods have async counterparts.
+
+```csharp
+await _context.SaveChangesTimestampedAsync();
+
+var latestComment = await _context.LatestCreatedAsync<Comment>();
+var latestComment = await _context.LatestCreatedOrDefaultAsync<Comment>();
+
+var latestComment = await _context.Comments.LatestCreatedAsync();
+var latestComment = await _context.Comments.LatestCreatedOrDefaultAsync();
 ```
 
 ## Develop
