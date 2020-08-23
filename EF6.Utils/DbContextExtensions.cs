@@ -1,6 +1,5 @@
-﻿using System;
+﻿using EF6.Utils.Internal;
 using System.Data.Entity;
-using System.Linq;
 
 namespace EF6.Utils
 {
@@ -18,40 +17,11 @@ namespace EF6.Utils
 
         public static int SaveChangesTimestamped(this DbContext context)
         {
-            SetAddedTimestamps(context);
+            context.SetAddedTimestamps();
 
-            SetModifiedTimestamps(context);
+            context.SetModifiedTimestamps();
 
             return context.SaveChanges();
-        }
-
-        private static void SetModifiedTimestamps(DbContext context)
-        {
-            var modified = context.ChangeTracker.Entries<ITimestampedEntity>()
-                .Where(x => x.State == EntityState.Modified)
-                .Select(x => x.Entity);
-
-            var now = DateTime.Now;
-
-            foreach (var e in modified)
-            {
-                e.UpdatedOn = now;
-            }
-        }
-
-        private static void SetAddedTimestamps(DbContext context)
-        {
-            var newRecords = context.ChangeTracker.Entries<ITimestampedEntity>()
-                .Where(x => x.State == EntityState.Added)
-                .Select(x => x.Entity);
-
-            var now = DateTime.Now;
-
-            foreach (var e in newRecords)
-            {
-                e.CreatedOn = now;
-                e.UpdatedOn = now;
-            }
         }
     }
 }
