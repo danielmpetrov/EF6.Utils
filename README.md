@@ -1,7 +1,8 @@
 # EF6.Utils
 
+[![Build status](https://ci.appveyor.com/api/projects/status/7kiwadlsw5ew8es2?svg=true)](https://ci.appveyor.com/project/danielmpetrov/ef6-utils)
 [![GitHub](https://img.shields.io/github/license/danielmpetrov/ef6.utils)](https://github.com/danielmpetrov/ef6.utils/blob/master/LICENSE)
-[![Feedback](https://img.shields.io/badge/Feedback-Welcome-orange)](https://github.com/danielmpetrov/EF6.Utils/issues)
+[![Feedback](https://img.shields.io/badge/feedback-welcome-orange)](https://github.com/danielmpetrov/EF6.Utils/issues)
 
 A set of Entity Framework 6 extensions that reduce the boilerplate needed for common requirements.
 
