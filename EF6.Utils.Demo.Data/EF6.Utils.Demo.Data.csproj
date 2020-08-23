@@ -53,21 +53,12 @@
   <ItemGroup>
     <Compile Include="AppDbContext.cs" />
     <Compile Include="Comment.cs" />
-    <Compile Include="Migrations\202008220846577_Initial.cs" />
-    <Compile Include="Migrations\202008220846577_Initial.designer.cs">
-      <DependentUpon>202008220846577_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202008220846577_Initial.resx">
-      <DependentUpon>202008220846577_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EF6.Utils\EF6.Utils.csproj">

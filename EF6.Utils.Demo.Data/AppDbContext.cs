@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using EF6.Utils.Demo.Data.Migrations;
+using System.Data.Common;
 using System.Data.Entity;
 
 namespace EF6.Utils.Demo.Data
@@ -7,6 +8,7 @@ namespace EF6.Utils.Demo.Data
     {
         public AppDbContext()
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AppDbContext, Configuration>());
         }
 
         public AppDbContext(DbConnection connection) : base(connection, true)
