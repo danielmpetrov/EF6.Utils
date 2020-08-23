@@ -1,7 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net47</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Daniel Petrov</Authors>
+    <PackageDescription>
+      A set of Entity Framework 6 extensions that reduce the boilerplate needed for common requirements.
+    </PackageDescription>
+    <PackageProjectUrl>https://github.com/danielmpetrov/EF6.Utils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/danielmpetrov/EF6.Utils.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>entity-framework;extension-methods</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright Daniel Petrov 2020</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
