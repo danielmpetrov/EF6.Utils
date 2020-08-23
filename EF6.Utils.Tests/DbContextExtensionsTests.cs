@@ -18,6 +18,7 @@ namespace EF6.Utils.Tests
             {
                 var connection = DbConnectionFactory.CreateTransient();
                 _context = new AppDbContext(connection);
+                _context.Database.CreateIfNotExists();
             }
 
             [Fact]
@@ -120,6 +121,7 @@ namespace EF6.Utils.Tests
                 var loader = new CsvDataLoader(@".\CsvFiles");
                 var connection = DbConnectionFactory.CreateTransient(loader);
                 _context = new AppDbContext(connection);
+                _context.Database.CreateIfNotExists();
             }
 
             [Fact]
