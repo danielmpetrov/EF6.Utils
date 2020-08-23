@@ -20,4 +20,10 @@
     <ProjectReference Include="..\EF6.Utils\EF6.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CsvFiles\comments.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

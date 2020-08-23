@@ -9,5 +9,10 @@ namespace EF6.Utils
         {
             return set.OrderByDescending(e => e.CreatedOn).FirstOrDefault();
         }
+        
+        public static T LatestCreated<T>(this DbSet<T> set) where T : class, ITimestampedEntity
+        {
+            return set.OrderByDescending(e => e.CreatedOn).First();
+        }
     }
 }

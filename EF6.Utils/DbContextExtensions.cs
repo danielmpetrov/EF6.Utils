@@ -11,6 +11,11 @@ namespace EF6.Utils
             return context.Set<T>().LatestCreatedOrDefault();
         }
 
+        public static T LatestCreated<T>(this DbContext context) where T : class, ITimestampedEntity
+        {
+            return context.Set<T>().LatestCreated();
+        }
+
         public static int SaveChangesTimestamped(this DbContext context)
         {
             SetAddedTimestamps(context);
