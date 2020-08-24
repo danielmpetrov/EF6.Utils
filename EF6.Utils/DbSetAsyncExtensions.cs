@@ -8,12 +8,12 @@ namespace EF6.Utils
     {
         public static async Task<T> LatestCreatedOrDefaultAsync<T>(this DbSet<T> set) where T : class, ITimestampedEntity
         {
-            return await set.OrderByDescending(e => e.CreatedOn).FirstOrDefaultAsync();
+            return await set.OrderByDescending(e => e.CreatedOn).FirstOrDefaultAsync().ConfigureAwait(false);
         }
         
         public static async Task<T> LatestCreatedAsync<T>(this DbSet<T> set) where T : class, ITimestampedEntity
         {
-            return await set.OrderByDescending(e => e.CreatedOn).FirstAsync();
+            return await set.OrderByDescending(e => e.CreatedOn).FirstAsync().ConfigureAwait(false);
         }
     }
 }

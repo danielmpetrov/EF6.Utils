@@ -8,12 +8,12 @@ namespace EF6.Utils
     {
         public static async Task<T> LatestCreatedOrDefaultAsync<T>(this DbContext context) where T : class, ITimestampedEntity
         {
-            return await context.Set<T>().LatestCreatedOrDefaultAsync();
+            return await context.Set<T>().LatestCreatedOrDefaultAsync().ConfigureAwait(false);
         }
 
         public static async Task<T> LatestCreatedAsync<T>(this DbContext context) where T : class, ITimestampedEntity
         {
-            return await context.Set<T>().LatestCreatedAsync();
+            return await context.Set<T>().LatestCreatedAsync().ConfigureAwait(false);
         }
 
         public static async Task<int> SaveChangesTimestampedAsync(this DbContext context)
@@ -22,7 +22,7 @@ namespace EF6.Utils
 
             context.SetModifiedTimestamps();
 
-            return await context.SaveChangesAsync();
+            return await context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }
