@@ -38,12 +38,16 @@ _context.SaveChanges();
 
 ```csharp
 // query from the context
-var latestComment = _context.LatestCreated<Comment>(); // throws on empty set
-var latestComment = _context.LatestCreatedOrDefault<Comment>(); // returns null on empty set
+var latestCreated = _context.LatestCreated<Comment>();
+var latestCreated = _context.LatestCreatedOrDefault<Comment>();
+var latestUpdated = _context.LatestUpdated<Comment>();
+var latestUpdated = _context.LatestUpdatedOrDefault<Comment>();
 
 // query from the set
-var latestComment = _context.Comments.LatestCreated(); // throws on empty set
-var latestComment = _context.Comments.LatestCreatedOrDefault(); // returns null on empty set
+var latestCreated = _context.Comments.LatestCreated();
+var latestCreated = _context.Comments.LatestCreatedOrDefault();
+var latestUpdated = _context.Comments.LatestUpdated();
+var latestUpdated = _context.Comments.LatestUpdatedOrDefault();
 ```
 
 All methods have async counterparts.
@@ -51,11 +55,15 @@ All methods have async counterparts.
 ```csharp
 await _context.SaveChangesTimestampedAsync();
 
-var latestComment = await _context.LatestCreatedAsync<Comment>();
-var latestComment = await _context.LatestCreatedOrDefaultAsync<Comment>();
+var latestCreated = await _context.LatestCreatedAsync<Comment>();
+var latestCreated = await _context.LatestCreatedOrDefaultAsync<Comment>();
+var latestUpdated = await _context.LatestUpdatedAsync<Comment>();
+var latestUpdated = await _context.LatestUpdatedOrDefaultAsync<Comment>();
 
-var latestComment = await _context.Comments.LatestCreatedAsync();
-var latestComment = await _context.Comments.LatestCreatedOrDefaultAsync();
+var latestCreated = await _context.Comments.LatestCreatedAsync();
+var latestCreated = await _context.Comments.LatestCreatedOrDefaultAsync();
+var latestUpdated = await _context.Comments.LatestUpdatedAsync();
+var latestUpdated = await _context.Comments.LatestUpdatedOrDefaultAsync();
 ```
 
 ## Develop

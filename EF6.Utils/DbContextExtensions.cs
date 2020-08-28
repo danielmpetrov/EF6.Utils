@@ -24,5 +24,25 @@ namespace EF6.Utils
         {
             return await context.Set<T>().LatestCreatedAsync().ConfigureAwait(false);
         }
+
+        public static T LatestUpdatedOrDefault<T>(this DbContext context) where T : class, ITimestampedEntity
+        {
+            return context.Set<T>().LatestUpdatedOrDefault();
+        }
+
+        public static async Task<T> LatestUpdatedOrDefaultAsync<T>(this DbContext context) where T : class, ITimestampedEntity
+        {
+            return await context.Set<T>().LatestUpdatedOrDefaultAsync().ConfigureAwait(false);
+        }
+
+        public static T LatestUpdated<T>(this DbContext context) where T : class, ITimestampedEntity
+        {
+            return context.Set<T>().LatestUpdated();
+        }
+
+        public static async Task<T> LatestUpdatedAsync<T>(this DbContext context) where T : class, ITimestampedEntity
+        {
+            return await context.Set<T>().LatestUpdatedAsync().ConfigureAwait(false);
+        }
     }
 }

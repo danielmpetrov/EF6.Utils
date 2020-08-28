@@ -25,5 +25,25 @@ namespace EF6.Utils
         {
             return await set.OrderByDescending(e => e.CreatedOn).FirstAsync().ConfigureAwait(false);
         }
+
+        public static T LatestUpdatedOrDefault<T>(this DbSet<T> set) where T : class, ITimestampedEntity
+        {
+            return set.OrderByDescending(e => e.UpdatedOn).FirstOrDefault();
+        }
+
+        public static async Task<T> LatestUpdatedOrDefaultAsync<T>(this DbSet<T> set) where T : class, ITimestampedEntity
+        {
+            return await set.OrderByDescending(e => e.UpdatedOn).FirstOrDefaultAsync().ConfigureAwait(false);
+        }
+
+        public static T LatestUpdated<T>(this DbSet<T> set) where T : class, ITimestampedEntity
+        {
+            return set.OrderByDescending(e => e.UpdatedOn).First();
+        }
+
+        public static async Task<T> LatestUpdatedAsync<T>(this DbSet<T> set) where T : class, ITimestampedEntity
+        {
+            return await set.OrderByDescending(e => e.UpdatedOn).FirstAsync().ConfigureAwait(false);
+        }
     }
 }
