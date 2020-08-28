@@ -4,6 +4,7 @@ using Effort.DataLoaders;
 using FluentAssertions;
 using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EF6.Utils.Tests
@@ -33,6 +34,16 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
+            public async Task LatestCreatedOrDefaultAsync_WhenEmptySet_ShouldReturnNull()
+            {
+                // Act
+                var latestCreated = await _comments.LatestCreatedOrDefaultAsync();
+
+                // Assert
+                latestCreated.Should().BeNull();
+            }
+
+            [Fact]
             public void LatestCreated_WhenEmptySet_ShouldThrowInvalidOperationException()
             {
                 // Act
@@ -40,6 +51,16 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 action.Should().ThrowExactly<InvalidOperationException>();
+            }
+
+            [Fact]
+            public async Task LatestCreatedAsync_WhenEmptySet_ShouldThrowInvalidOperationException()
+            {
+                // Act
+                Func<Task> action = async () => await _comments.LatestCreatedAsync();
+
+                // Assert
+                await action.Should().ThrowExactlyAsync<InvalidOperationException>();
             }
         }
 
@@ -68,10 +89,32 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
+            public async Task LatestCreatedOrDefaultAsync_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
+            {
+                // Act
+                var latestCreated = await _comments.LatestCreatedOrDefaultAsync();
+
+                // Assert
+                latestCreated.Should().NotBeNull();
+                latestCreated.Id.Should().Be(2);
+            }
+
+            [Fact]
             public void LatestCreated_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
             {
                 // Act
                 var latestCreated = _comments.LatestCreated();
+
+                // Assert
+                latestCreated.Should().NotBeNull();
+                latestCreated.Id.Should().Be(2);
+            }
+
+            [Fact]
+            public async Task LatestCreatedAsync_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
+            {
+                // Act
+                var latestCreated = await _comments.LatestCreatedAsync();
 
                 // Assert
                 latestCreated.Should().NotBeNull();
