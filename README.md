@@ -10,14 +10,19 @@ A set of Entity Framework 6 extensions that reduce the boilerplate needed for co
 
 ### Timestamps
 
-We often have the requirement to persist when records are created and modified. `EF6.Utils` provides an interface to add a `CreatedOn` and `UpdatedOn` fields to your entities and a way to save with timestamps.
+We often have the requirement to persist when records are created and modified. `EF6.Utils` provides an interface to add a `CreatedOn` and `UpdatedOn` fields to your entities. Inherit `UtilsDbContext` instead of `DbContext` in your application context to enable automatic timestamp updates whenever `SaveChanges` is called.
 
 ```csharp
 public class Comment : ITimestampedEntity
 {
     // ...
-    public DateTime CreatedOn { get; set; } // do not set manually
-    public DateTime UpdatedOn { get; set; } // do not set manually
+    public DateTime CreatedOn { get; set; }
+    public DateTime UpdatedOn { get; set; }
+}
+
+public class AppDbContext : UtilsDbContext
+{
+    public DbSet<Comment> Comments { get; set; }
 }
 
 // ...
@@ -26,7 +31,7 @@ _context.Comments.Add(new Comment());
 
 // for a new entity, CreatedOn and UpdatedOn will be the same
 // for entities that have a modified state, UpdatedOn will be amended accordingly
-_context.SaveChangesTimestamped();
+_context.SaveChanges();
 ```
 
 `EF6.Utils` also comes with extension methods for common timestamp-related queries.

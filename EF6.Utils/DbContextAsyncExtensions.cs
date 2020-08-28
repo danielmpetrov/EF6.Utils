@@ -1,5 +1,4 @@
-﻿using EF6.Utils.Internal;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace EF6.Utils
@@ -14,15 +13,6 @@ namespace EF6.Utils
         public static async Task<T> LatestCreatedAsync<T>(this DbContext context) where T : class, ITimestampedEntity
         {
             return await context.Set<T>().LatestCreatedAsync().ConfigureAwait(false);
-        }
-
-        public static async Task<int> SaveChangesTimestampedAsync(this DbContext context)
-        {
-            context.SetAddedTimestamps();
-
-            context.SetModifiedTimestamps();
-
-            return await context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

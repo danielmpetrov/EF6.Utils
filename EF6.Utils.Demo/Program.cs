@@ -27,7 +27,7 @@ namespace EF6.Utils.Demo
             using (var context = new AppDbContext())
             {
                 context.Comments.Add(newComment);
-                context.SaveChangesTimestamped();
+                context.SaveChanges();
             }
         }
 
@@ -37,7 +37,7 @@ namespace EF6.Utils.Demo
             {
                 var comment = context.Comments.LatestCreatedOrDefault(); // or: context.LatestOrDefault<Comment>();
                 comment.Content = "EF6.Utils is REALLY awesome!!!";
-                context.SaveChangesTimestamped();
+                context.SaveChanges();
             }
         }
     }

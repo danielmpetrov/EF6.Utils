@@ -4,12 +4,11 @@ using Effort.DataLoaders;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace EF6.Utils.Tests
 {
-    public class DbContextAsyncExtensionsTests
+    public class UtilsDbContextTests
     {
         public class EmptyContext
         {
@@ -23,14 +22,14 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
-            public async Task SaveChangesTimestamped_WhenAddingOneNewEntity_ShouldSetTheSameCreatedAndUpdatedDateTimes()
+            public void SaveChanges_WhenAddingOneNewEntity_ShouldSetTheSameCreatedAndUpdatedDateTimes()
             {
                 // Arrange
                 var comment = new Comment { Content = "Test" };
                 _context.Comments.Add(comment);
 
                 // Act
-                await _context.SaveChangesTimestampedAsync();
+                _context.SaveChanges();
 
                 // Assert
                 comment.CreatedOn.Should().NotBe(default);
@@ -39,21 +38,21 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
-            public async Task SaveChangesTimestamped_WhenAddingOneNewEntity_ShouldReturnOne()
+            public void SaveChanges_WhenAddingOneNewEntity_ShouldReturnOne()
             {
                 // Arrange
                 var comment = new Comment { Content = "Test" };
                 _context.Comments.Add(comment);
 
                 // Act
-                var saved = await _context.SaveChangesTimestampedAsync();
+                var saved = _context.SaveChanges();
 
                 // Assert
                 saved.Should().Be(1);
             }
 
             [Fact]
-            public async Task SaveChangesTimestamped_WhenAddingMultipleNewEntities_ShouldSetTheSameCreatedAndUpdatedDateTimes()
+            public void SaveChanges_WhenAddingMultipleNewEntities_ShouldSetTheSameCreatedAndUpdatedDateTimes()
             {
                 // Arrange
                 var comments = new List<Comment>
@@ -65,7 +64,7 @@ namespace EF6.Utils.Tests
                 _context.Comments.AddRange(comments);
 
                 // Act
-                await _context.SaveChangesTimestampedAsync();
+                _context.SaveChanges();
 
                 // Assert
                 comments[0].CreatedOn.Should().Be(comments[1].CreatedOn);
@@ -73,7 +72,7 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
-            public async Task SaveChangesTimestamped_WhenAddingMultipleNewEntities_ShouldReturnTheCorrectNumberOfEntitiesSaved()
+            public void SaveChanges_WhenAddingMultipleNewEntities_ShouldReturnTheCorrectNumberOfEntitiesSaved()
             {
                 // Arrange
                 var comments = new List<Comment>
@@ -86,30 +85,30 @@ namespace EF6.Utils.Tests
                 _context.Comments.AddRange(comments);
 
                 // Act
-                var saved = await _context.SaveChangesTimestampedAsync();
+                var saved = _context.SaveChanges();
 
                 // Assert
                 saved.Should().Be(3);
             }
 
             [Fact]
-            public async Task LatestCreatedOrDefault_WhenEmptySet_ShouldReturnNull()
+            public void LatestCreatedOrDefault_WhenEmptySet_ShouldReturnNull()
             {
                 // Act
-                var latestCreated = await _context.LatestCreatedOrDefaultAsync<Comment>();
+                var latestCreated = _context.LatestCreatedOrDefault<Comment>();
 
                 // Assert
                 latestCreated.Should().BeNull();
             }
 
             [Fact]
-            public async Task LatestCreated_WhenEmptySet_ShouldThrowInvalidOperationException()
+            public void LatestCreated_WhenEmptySet_ShouldThrowInvalidOperationException()
             {
                 // Act
-                Func<Task> action = async () => await _context.LatestCreatedAsync<Comment>();
+                Action action = () => _context.LatestCreated<Comment>();
 
                 // Assert
-                await action.Should().ThrowExactlyAsync<InvalidOperationException>();
+                action.Should().ThrowExactly<InvalidOperationException>();
             }
         }
 
@@ -126,10 +125,10 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
-            public async Task LatestCreatedOrDefault_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
+            public void LatestCreatedOrDefault_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
             {
                 // Act
-                var latestCreated = await _context.LatestCreatedOrDefaultAsync<Comment>();
+                var latestCreated = _context.LatestCreatedOrDefault<Comment>();
 
                 // Assert
                 latestCreated.Should().NotBeNull();
@@ -137,10 +136,10 @@ namespace EF6.Utils.Tests
             }
 
             [Fact]
-            public async Task LatestCreated_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
+            public void LatestCreated_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
             {
                 // Act
-                var latestCreated = await _context.LatestCreatedAsync<Comment>();
+                var latestCreated = _context.LatestCreated<Comment>();
 
                 // Assert
                 latestCreated.Should().NotBeNull();
