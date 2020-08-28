@@ -34,6 +34,27 @@ _context.Comments.Add(new Comment());
 _context.SaveChanges();
 ```
 
+By default, the current time is being set through the `System.DateTime.Now` property. `EF6.Utils` provides an `EF6.Utils.Common.IClock` interface and constructor overloads so that `Now` can be anything you like.
+
+```csharp
+public class UtcClock : IClock
+{
+    public DateTime Now() => DateTime.UtcNow;
+}
+
+public class AppDbContext : UtilsDbContext
+{
+    public AppDbContext(IClock clock) : base(clock) { }
+
+    public DbSet<Comment> Comments { get; set; }
+}
+
+using (var context = new AppDbContext(new UtcClock()))
+{
+    // with this context, timestamps will be in UTC
+}
+```
+
 `EF6.Utils` also comes with extension methods for common timestamp-related queries.
 
 ```csharp
