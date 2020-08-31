@@ -125,7 +125,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -136,7 +136,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -147,7 +147,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -158,7 +158,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]

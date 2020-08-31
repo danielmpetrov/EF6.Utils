@@ -7,6 +7,8 @@ using FluentAssertions.Extensions;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -255,11 +257,134 @@ namespace EF6.Utils.Tests
 
             public FullContext()
             {
+                var clockMock = new Mock<IClock>();
+                clockMock.Setup(c => c.Now()).Returns(25.December(2020).At(4, 20));
+
                 var loader = new CsvDataLoader(@".\CsvFiles");
                 var connection = DbConnectionFactory.CreateTransient(loader);
-                _context = new AppDbContext(connection);
+                _context = new AppDbContext(connection, clockMock.Object);
                 _context.Database.CreateIfNotExists();
             }
+
+            #region Remove
+
+            [Fact]
+            public void SaveChanges_WhenRemovingAnEntity_ShouldSetDeletedOnCorrectly()
+            {
+                // Arrange
+                var comment = _context.Comments.First();
+                _context.Comments.Remove(comment);
+
+                // Act
+                _context.SaveChanges();
+
+                // Assert
+                var expected = 25.December(2020).At(4, 20);
+                comment.DeletedOn.Should().Be(expected);
+                _context.Entry(comment).State.Should().Be(EntityState.Unchanged);
+            }
+
+            [Fact]
+            public async Task SaveChangesAsync_WhenRemovingAnEntity_ShouldSetDeletedOnCorrectly()
+            {
+                // Arrange
+                var comment = _context.Comments.First();
+                _context.Comments.Remove(comment);
+
+                // Act
+                await _context.SaveChangesAsync();
+
+                // Assert
+                var expected = 25.December(2020).At(4, 20);
+                comment.DeletedOn.Should().Be(expected);
+                _context.Entry(comment).State.Should().Be(EntityState.Unchanged);
+            }
+
+            [Fact]
+            public void SaveChanges_WhenRemovingOneNewEntity_ShouldReturnOne()
+            {
+                // Arrange
+                var comment = _context.Comments.First();
+                _context.Comments.Remove(comment);
+
+                // Act
+                var saved = _context.SaveChanges();
+
+                // Assert
+                saved.Should().Be(1);
+            }
+
+            [Fact]
+            public async Task SaveChangesAsync_WhenRemovingOneNewEntity_ShouldReturnOne()
+            {
+                // Arrange
+                var comment = _context.Comments.First();
+                _context.Comments.Remove(comment);
+
+                // Act
+                var saved = await _context.SaveChangesAsync();
+
+                // Assert
+                saved.Should().Be(1);
+            }
+
+            [Fact]
+            public void SaveChanges_WhenRemovingMultipleEntities_ShouldSetTheSameDeletedOnDateTimes()
+            {
+                // Arrange
+                var comments = _context.Comments.Take(2).ToList();
+                _context.Comments.RemoveRange(comments);
+
+                // Act
+                _context.SaveChanges();
+
+                // Assert
+                comments[0].DeletedOn.Should().Be(comments[1].DeletedOn);
+            }
+
+            [Fact]
+            public async Task SaveChangesAsync_WhenRemovingMultipleEntities_ShouldSetTheSameDeletedOnDateTimes()
+            {
+                // Arrange
+                var comments = _context.Comments.Take(2).ToList();
+                _context.Comments.RemoveRange(comments);
+
+                // Act
+                await _context.SaveChangesAsync();
+
+                // Assert
+                comments[0].DeletedOn.Should().Be(comments[1].DeletedOn);
+            }
+
+            [Fact]
+            public void SaveChanges_WhenRemovingMultipleEntities_ShouldReturnTheCorrectNumberOfEntitiesSaved()
+            {
+                // Arrange
+                var comments = _context.Comments.Take(2).ToList();
+                _context.Comments.RemoveRange(comments);
+
+                // Act
+                var saved = _context.SaveChanges();
+
+                // Assert
+                saved.Should().Be(2);
+            }
+
+            [Fact]
+            public async Task SaveChangesAsync_WhenRemovingMultipleEntities_ShouldReturnTheCorrectNumberOfEntitiesSaved()
+            {
+                // Arrange
+                var comments = _context.Comments.Take(2).ToList();
+                _context.Comments.RemoveRange(comments);
+
+                // Act
+                var saved = await _context.SaveChangesAsync();
+
+                // Assert
+                saved.Should().Be(2);
+            }
+
+            # endregion
 
             [Fact]
             public void LatestCreatedOrDefault_WhenNonEmptySet_ShouldReturnTheMostRecentlyCreatedRecord()
@@ -269,7 +394,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -280,7 +405,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -291,7 +416,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]
@@ -302,7 +427,7 @@ namespace EF6.Utils.Tests
 
                 // Assert
                 latestCreated.Should().NotBeNull();
-                latestCreated.Id.Should().Be(2);
+                latestCreated.Id.Should().Be(3);
             }
 
             [Fact]

@@ -74,8 +74,6 @@ var latestUpdated = _context.Comments.LatestUpdatedOrDefault();
 All methods have async counterparts.
 
 ```csharp
-await _context.SaveChangesTimestampedAsync();
-
 var latestCreated = await _context.LatestCreatedAsync<Comment>();
 var latestCreated = await _context.LatestCreatedOrDefaultAsync<Comment>();
 var latestUpdated = await _context.LatestUpdatedAsync<Comment>();
@@ -85,6 +83,30 @@ var latestCreated = await _context.Comments.LatestCreatedAsync();
 var latestCreated = await _context.Comments.LatestCreatedOrDefaultAsync();
 var latestUpdated = await _context.Comments.LatestUpdatedAsync();
 var latestUpdated = await _context.Comments.LatestUpdatedOrDefaultAsync();
+```
+
+### Soft Delete
+
+To enable soft delete functionality, implement the `ISoftDeletableEntity` interface on any entity, which requires a single `DeletedOn` property of type `Datetime?`. This property is set to `IClock.Now()` whenever an entity is marked for deletion, and the entity is updated instead of deleted.
+
+```csharp
+public class Comment : ISoftDeletableEntity
+{
+    // ...
+    public DateTime? DeletedOn { get; set; }
+}
+
+public class AppDbContext : UtilsDbContext
+{
+    public DbSet<Comment> Comments { get; set; }
+}
+
+// ...
+var comment = _context.Comments.First();
+_context.Comments.Remove(comment);
+
+// the comment will be updated, and DeletedOn will be set to IClock.Now()
+_context.SaveChanges();
 ```
 
 ## Develop

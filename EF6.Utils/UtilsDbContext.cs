@@ -1,4 +1,5 @@
 ﻿using EF6.Utils.Common;
+using System;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
@@ -88,48 +89,63 @@ namespace EF6.Utils
 
         public override int SaveChanges()
         {
-            SetAddedTimestamps();
-
-            SetModifiedTimestamps();
+            BeforeSaveChanges();
 
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            SetAddedTimestamps();
-
-            SetModifiedTimestamps();
+            BeforeSaveChanges();
 
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        private void SetModifiedTimestamps()
+        private void BeforeSaveChanges()
         {
-            var modified = ChangeTracker.Entries<ITimestampedEntity>()
-                .Where(x => x.State == EntityState.Modified)
-                .Select(x => x.Entity);
-
             var now = _clock.Now();
 
-            foreach (var e in modified)
+            SetAddedTimestamps(now);
+
+            SetModifiedTimestamps(now);
+
+            SoftDeleteEntities(now);
+        }
+
+        private void SoftDeleteEntities(DateTime now)
+        {
+            var removedEntries = ChangeTracker.Entries<ISoftDeletableEntity>()
+                .Where(x => x.State == EntityState.Deleted);
+
+            foreach (var entry in removedEntries)
             {
-                e.UpdatedOn = now;
+                entry.State = EntityState.Modified;
+                entry.Entity.DeletedOn = now;
             }
         }
 
-        private void SetAddedTimestamps()
+        private void SetModifiedTimestamps(DateTime now)
         {
-            var newRecords = ChangeTracker.Entries<ITimestampedEntity>()
+            var modifiedEntities = ChangeTracker.Entries<ITimestampedEntity>()
+                .Where(x => x.State == EntityState.Modified)
+                .Select(x => x.Entity);
+
+            foreach (var entity in modifiedEntities)
+            {
+                entity.UpdatedOn = now;
+            }
+        }
+
+        private void SetAddedTimestamps(DateTime now)
+        {
+            var addedEntities = ChangeTracker.Entries<ITimestampedEntity>()
                 .Where(x => x.State == EntityState.Added)
                 .Select(x => x.Entity);
 
-            var now = _clock.Now();
-
-            foreach (var e in newRecords)
+            foreach (var entity in addedEntities)
             {
-                e.CreatedOn = now;
-                e.UpdatedOn = now;
+                entity.CreatedOn = now;
+                entity.UpdatedOn = now;
             }
         }
     }
